@@ -26,8 +26,22 @@ G_DEFINE_TYPE(FlutterPasskeyPlugin, flutter_passkey_plugin, g_object_get_type())
 static void flutter_passkey_plugin_class_init(FlutterPasskeyPluginClass* klass) {}
 static void flutter_passkey_plugin_init(FlutterPasskeyPlugin* self) {}
 
-// Path to store the private key
-static const char* PRIVATE_KEY_FILE = "/home/user/.passkey_private.pem";
+static std::string getKeyPath() {
+  const char* dataHome = getenv("XDG_DATA_HOME");
+  std::string base;
+  if (dataHome && *dataHome) {
+    base = dataHome;
+  } else {
+    // fallback to ~/.local/share
+    const char* home = getenv("HOME");
+    if (!home) {
+      return "/tmp/flutter_passkey_private.pem";
+    }
+    base = std::string(home) + "/.local/share";
+  }
+  // possibly mkdir(base + "/flutter_passkey") if needed
+  return base + "/passkey_private.pem";
+}
 
 // ----------------------------------------------------
 // HELPER FUNCTIONS: EVP-based key generation & signing
@@ -183,13 +197,14 @@ static std::string sign_challenge_evp(const std::string& challenge, const char* 
 // Plugin-level wrappers to call the EVP functions
 // ----------------------------------------------
 static std::string generate_passkey() {
-  return generate_passkey_evp(PRIVATE_KEY_FILE);
+  std::string path = getKeyPath();
+  return generate_passkey_evp(path.c_str());
 }
 
 static std::string sign_challenge(const std::string& challenge) {
-  return sign_challenge_evp(challenge, PRIVATE_KEY_FILE);
+  std::string path = getKeyPath();
+  return sign_challenge_evp(challenge, path.c_str());
 }
-
 // ----------------------------------------------
 // Flutter method call handler
 // ----------------------------------------------
