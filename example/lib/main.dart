@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_passkey/flutter_passkey.dart';
 
@@ -30,7 +29,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _flutterPasskeyPlugin.isSupported().then((value) => setState(() {_isPasskeySupported = value;}));
+    _flutterPasskeyPlugin.isSupported().then((value) => setState(() {
+          _isPasskeySupported = value;
+        }));
   }
 
   @override
@@ -56,10 +57,12 @@ class _MyAppState extends State<MyApp> {
                     FilledButton(
                       onPressed: () {
                         final options = _getCredentialCreationOptions();
-                        _flutterPasskeyPlugin.createCredential(options).then((response) {
-                          // Send response to the server
+                        _flutterPasskeyPlugin
+                            .createCredential(options)
+                            .then((response) {
+                          print("Passkey: $response");
                         }).catchError((error) {
-                          // Handle error
+                          print('Error: $error');
                         });
                       },
                       child: const Text("Register Passkey"),
@@ -67,10 +70,12 @@ class _MyAppState extends State<MyApp> {
                     FilledButton(
                       onPressed: () {
                         final options = _getCredentialRequestOptions();
-                        _flutterPasskeyPlugin.getCredential(options).then((response) {
-                          // Send response to the server
+                        _flutterPasskeyPlugin
+                            .getCredential(options)
+                            .then((response) {
+                          print("Signature: $response");
                         }).catchError((error) {
-                          // Handle error
+                          print('Error: $error');
                         });
                       },
                       child: const Text("Verify Passkey"),
