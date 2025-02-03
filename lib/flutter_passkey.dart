@@ -19,6 +19,8 @@ class FlutterPasskey {
           return (version >= 9);
         case 'Linux':
           return true;
+        case 'macOS':
+          return true;
         default:
           return false;
       }

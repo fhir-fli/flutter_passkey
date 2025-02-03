@@ -41,6 +41,9 @@ flutter:
       linux:
         pluginClass: FlutterPasskeyPlugin
         dartPluginClass: FlutterPasskeyLinux
+      macos:
+        pluginClass: FlutterPasskeyMacos
+        dartPluginClass: FlutterPasskeyMacos
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
