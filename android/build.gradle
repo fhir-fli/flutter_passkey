@@ -25,6 +25,8 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    namespace "com.authentrend.flutter_passkey"
+    
     compileSdkVersion 34
 
     compileOptions {
